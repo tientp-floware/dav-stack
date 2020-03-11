@@ -3,6 +3,6 @@ Sometimes when using data volumes (`-v` flags) permissions issues can arise betw
 
 An example of mapping the UID and GID to the container is as follows:
 ```
-docker run -d -e "PUID=`id -u $USER`" -e "PGID=`id -g $USER`" -v local_dir:/var/www/html richarvey/nginx-php-fpm:latest
+docker run -d -e "PUID=`id -u $USER`" -e "PGID=`id -g $USER`" -v local_dir:/var/www/html prefix/dav-stack:latest
 ```
 This will pull your local UID/GID and map it into the container so you can edit on your host machine and the code will still run in the container.

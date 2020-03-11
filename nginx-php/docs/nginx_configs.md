@@ -9,5 +9,5 @@ If you operate your container behind a load balancer, an ELB on AWS for example,
 ```
 For example:
 ```
-docker run -d -e "REAL_IP_HEADER=1" -e "REAL_IP_FROM=10.1.0.0/16" richarvey/nginx-php-fpm:latest
+docker run -d -e "REAL_IP_HEADER=1" -e "REAL_IP_FROM=10.1.0.0/16" prefix/dav-stack:latest
 ```

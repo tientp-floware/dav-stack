@@ -5,7 +5,7 @@ There is often an occasion where you need to run a script on code to do a transf
 To set the variables pass them in as environment variables on the docker command line.
 Example:
 ```
-sudo docker run -d -e 'YOUR_VAR=VALUE' richarvey/nginx-php-fpm
+sudo docker run -d -e 'YOUR_VAR=VALUE' prefix/dav-stack
 ```
 You can then use PHP to get the environment variable into your code:
 ```

@@ -6,16 +6,16 @@ If you have improvements or suggestions please open an issue or pull request on 
 ## Quick Start
 To pull from docker hub:
 ```
-docker pull nginx-php:latest
+docker pull prefix/dav-stack
 ```
 ### Running
 To simply run the container:
 ```
-sudo docker run -d prefix/nginx-php
+sudo docker run -d prefix/dav-stack
 ```
 To dynamically pull code from git when starting:
 ```
-docker run -d -e 'GIT_EMAIL=email_address' -e 'GIT_NAME=full_name' -e 'GIT_USERNAME=git_username' -e 'GIT_REPO=github.com/project' -e 'GIT_PERSONAL_TOKEN=<long_token_string_here>' prefix/nginx-php:latest
+docker run -d -e 'GIT_EMAIL=email_address' -e 'GIT_NAME=full_name' -e 'GIT_USERNAME=git_username' -e 'GIT_REPO=github.com/project' -e 'GIT_PERSONAL_TOKEN=<long_token_string_here>' prefix/dav-stack:latest
 ```
 
 You can then browse to ```http://<DOCKER_HOST>``` to view the default install files. To find your ```DOCKER_HOST``` use the ```docker inspect``` to get the IP address (normally 172.17.0.2)
