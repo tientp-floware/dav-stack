@@ -1,0 +1,24 @@
+version: '3'
+
+# Network
+networks:
+    DAV_PHP:
+
+# Service 
+services:
+    dav:
+        restart: always
+        build:
+            args:
+                - DESTINATION_PATH=${DESTINATION_PATH}
+                - PUID=${PUID}
+            context: ./nginx-php
+            dockerfile: Dockerfile
+        container_name: ${APP_NAME:?err}-stack
+        volumes:
+            - ${DAV_APP_PATH}:${DESTINATION_PATH}:rw
+        networks:
+            - DAV_PHP
+        ports:
+            - "9091:80"
+               
