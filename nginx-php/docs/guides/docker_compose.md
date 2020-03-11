@@ -7,7 +7,7 @@ This guide will show you how to make a quick and easy docker compose file to get
 Create a docker-compose.yml file with the following contents:
 
 ```
-version: '2'
+version: '3'
 
 services:
   nginx-php-fpm:
