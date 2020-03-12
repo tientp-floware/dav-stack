@@ -19,6 +19,8 @@ ENV DESTINATION_PATH $DESTINATION_PATH
 ARG PUID
 ENV PUID $PUID
 
+ARG ENABLE_XDEBUG
+ENV ENABLE_XDEBUG $ENABLE_XDEBUG
 # resolves #166
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community gnu-libiconv

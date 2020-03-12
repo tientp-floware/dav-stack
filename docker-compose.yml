@@ -13,12 +13,14 @@ services:
             args:
                 - DESTINATION_PATH=${DESTINATION_PATH}
                 - PUID=${PUID}
+                - ENABLE_XDEBUG=${ENABLE_XDEBUG}
             context: ./nginx-php
             dockerfile: Dockerfile
         container_name: ${APP_NAME:?err}-stack
         volumes:
             - ${DAV_APP_PATH}:${DESTINATION_PATH}:rw
             - ./dav/conf/dav.conf:/etc/nginx/sites-enabled/default.conf
+            - ./dav/conf/php:/usr/local/etc/php/conf.d
         ports:
             - "9091:80"
         networks:
