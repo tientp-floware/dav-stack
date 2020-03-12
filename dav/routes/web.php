@@ -12,10 +12,16 @@
 */
 
 $router->group(['prefix' => '/dav'], function () use ($router) {
-    return app('dav-server')->exec();
+   
+    $router->get('/', function () use ($router){
+        return  app('dav-server')->exec();
+    });
+
+    $router->get('v', function () use ($router){
+        return $router->app->version();
+    });
 });
 
-/* $router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->get('/', function () use ($router) {
+    return 'Welcome to Lumen Dav Stack';
 });
- */
