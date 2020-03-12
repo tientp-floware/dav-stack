@@ -11,17 +11,32 @@
 |
 */
 
-$router->group(['prefix' => '/dav'], function () use ($router) {
-   
-    $router->get('/', function () use ($router){
-        return  app('dav-server')->exec();
-    });
-
-    $router->get('v', function () use ($router){
-        return $router->app->version();
-    });
-});
-
 $router->get('/', function () use ($router) {
     return 'Welcome to Lumen Dav Stack';
+});
+
+$router->group(['prefix' => '/dav'], function () use ($router) {
+    
+    $dav = app('dav-server');
+
+    //dd($router);
+
+    $router->get('/', function () use ($dav) {
+         return $dav->exec();
+    });
+
+    $router->post('',function () use ($dav) { 
+        return $dav->exec();
+    });
+
+    $router->put('', function () use ($dav) { 
+        return $dav;
+    });
+    $router->patch('', function () use ($dav) {
+        return $dav->exec();
+    });
+    $router->delete('/{route:.*}', function () use ($dav) { 
+        return $dav->exec();
+    });
+
 });
