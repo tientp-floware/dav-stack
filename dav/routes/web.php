@@ -10,11 +10,12 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-Route::any('/dav/{any?}', function () {
-    $response = app('dav-server')->serve();
-    dd($response);
-})->where('any', '.*');
 
-$router->get('/', function () use ($router) {
+$router->group(['prefix' => '/dav'], function () use ($router) {
+    return app('dav-server')->exec();
+});
+
+/* $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+ */

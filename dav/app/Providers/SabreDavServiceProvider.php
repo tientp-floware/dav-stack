@@ -14,9 +14,8 @@ class SabreDavServiceProvider extends ServiceProvider
     public function register()
     {
 
-        $rootDirectory = new DAV\FS\Directory('storage/dav');
-
         $this->app->singleton('dav-server', function ($app) {
+            $rootDirectory = new DAV\FS\Directory(storage_path());
             // The server object is responsible for making sense out of the WebDAV protocol
             $server = new DAV\Server($rootDirectory);
 
@@ -35,7 +34,7 @@ class SabreDavServiceProvider extends ServiceProvider
             $server->addPlugin(new DAV\Browser\Plugin());
 
             // All we need to do now, is to fire up the server
-            return $server->exec();
+            return $server;
         });
     }
 }
