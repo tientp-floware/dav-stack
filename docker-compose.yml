@@ -1,8 +1,9 @@
-version: '3'
+version: '3.5'
 
 # Network
 networks:
-    DAV_PHP:
+    services_backend:
+        external: true
 
 # Service 
 services:
@@ -17,8 +18,9 @@ services:
         container_name: ${APP_NAME:?err}-stack
         volumes:
             - ${DAV_APP_PATH}:${DESTINATION_PATH}:rw
-        networks:
-            - DAV_PHP
+            - ./dav/conf/dav.conf:/etc/nginx/sites-enabled/default.conf
         ports:
             - "9091:80"
+        networks:
+            - services_backend
                
