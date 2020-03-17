@@ -2,22 +2,31 @@
 
 namespace App\Providers;
 
+use DB;
 use Illuminate\Support\Arr;
 use LaravelSabre\LaravelSabre;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
+
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\ICSExportPlugin;
 use Sabre\CardDAV\VCFExportPlugin;
-use Illuminate\Support\Facades\App;
-use Sabre\DAVACL\Plugin as AclPlugin;
-use Sabre\DAVACL\PrincipalCollection;
-use Illuminate\Support\ServiceProvider;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
 use Sabre\DAV\Sync\Plugin as SyncPlugin;
-use App\Http\Controllers\DAV\DAVRedirect;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Sabre\DAV\Browser\Plugin as BrowserPlugin;
+use Sabre\DAVACL\Plugin as AclPlugin;
+use Sabre\DAVACL\PrincipalCollection;
+use App\Http\Controllers\DAV\DAVRedirect;
 use App\Http\Controllers\DAV\Auth\AuthBackend;
+
+/* use Sabre\DAVACL\PrincipalBackend\PDO as PrincipalBackend;
+use Sabre\CardDAV\Backend\PDO as CardDAVBackend;
+use Sabre\CardDAV\AddressBookRoot;
+use Sabre\CalDAV\Backend\PDO as CalDAVBackend; */
+
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
 use App\Http\Controllers\DAV\Backend\CalDAV\CalDAVBackend;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
@@ -38,21 +47,10 @@ class DAVServiceProvider extends ServiceProvider
         LaravelSabre::plugins(function () {
             return $this->plugins();
         });
-        LaravelSabre::auth(function (\Illuminate\Http\Request $request): bool {
-            // return auth()->user()->email == 'admin@admin.com';  
-            // dd($request->user()->email);          
-            if ($request->user()->admin ||
-                config('laravelsabre.users') == null) {
+        LaravelSabre::auth(function (\Illuminate\Http\Request $request): bool {         
+            if ($request->user()->admin || config('laravelsabre.users') == null) {
                 return true;
             }
-
-            $users = explode(',', config('laravelsabre.users'));
-            
-            $filtered = Arr::where($users, function ($value, $key) use ($request) {
-                return $value === $request->user()->email;
-            });
-
-            return count($filtered) > 0;
         });
     }
 
@@ -61,12 +59,12 @@ class DAVServiceProvider extends ServiceProvider
      */
     private function nodes(): array
     {
+
+        $pdo = DB::connection()->getPdo();
         // Initiate custom backends for link between Sabre and Monica
         $principalBackend = new PrincipalBackend();   // User rights
         $carddavBackend = new CardDAVBackend();       // Contacts
         $caldavBackend = new CalDAVBackend();         // Calendar
-
-        
 
         return [
             new PrincipalCollection($principalBackend),
@@ -100,13 +98,14 @@ class DAVServiceProvider extends ServiceProvider
         $aclPlugin->allowUnauthenticatedAccess = false;
         $aclPlugin->hideNodesFromListings = true;
         yield $aclPlugin;
-        yield new BrowserPlugin();
 
+        // Browser Plugin
+        yield new BrowserPlugin();
         // In local environment add browser plugin
-        /* if (App::environment('local')) {
+        if (App::environment('local')) {
             yield new BrowserPlugin(false);
         } else {
             yield new DAVRedirect();
-        } */
+        }
     }
 }
