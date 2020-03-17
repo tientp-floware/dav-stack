@@ -161,7 +161,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Illuminate\Notifications\NotificationServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -172,16 +171,9 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        // App\Providers\MacroServiceProvider::class,
-        // Vluzrmos\LanguageDetector\Providers\LanguageDetectorServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        // Laravel\Socialite\SocialiteServiceProvider::class,
-        // Intervention\Image\ImageServiceProvider::class,
-        // Laravel\Cashier\CashierServiceProvider::class,
-        // Laravel\Passport\PassportServiceProvider::class,
-        // Creativeorange\Gravatar\GravatarServiceProvider::class,
-        // Lahaxearnaud\U2f\U2fServiceProvider::class,
         App\Providers\DAVServiceProvider::class,
 
     ],

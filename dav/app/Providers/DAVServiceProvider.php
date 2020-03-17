@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use DB;
 use Illuminate\Support\Arr;
 use LaravelSabre\LaravelSabre;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
+
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\ICSExportPlugin;
 use Sabre\CardDAV\VCFExportPlugin;
@@ -18,6 +21,12 @@ use Sabre\DAVACL\Plugin as AclPlugin;
 use Sabre\DAVACL\PrincipalCollection;
 use App\Http\Controllers\DAV\DAVRedirect;
 use App\Http\Controllers\DAV\Auth\AuthBackend;
+
+/* use Sabre\DAVACL\PrincipalBackend\PDO as PrincipalBackend;
+use Sabre\CardDAV\Backend\PDO as CardDAVBackend;
+use Sabre\CardDAV\AddressBookRoot;
+use Sabre\CalDAV\Backend\PDO as CalDAVBackend; */
+
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
 use App\Http\Controllers\DAV\Backend\CalDAV\CalDAVBackend;
 use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
@@ -38,20 +47,10 @@ class DAVServiceProvider extends ServiceProvider
         LaravelSabre::plugins(function () {
             return $this->plugins();
         });
-        LaravelSabre::auth(function (\Illuminate\Http\Request $request): bool {
-            // return auth()->user()->email == 'admin@admin.com';  
-            // dd($request->user()->email);          
+        LaravelSabre::auth(function (\Illuminate\Http\Request $request): bool {         
             if ($request->user()->admin || config('laravelsabre.users') == null) {
                 return true;
             }
-
-            $users = explode(',', config('laravelsabre.users'));
-
-            $filtered = Arr::where($users, function ($value, $key) use ($request) {
-                return $value === $request->user()->email;
-            });
-
-            return count($filtered) > 0;
         });
     }
 
@@ -60,6 +59,8 @@ class DAVServiceProvider extends ServiceProvider
      */
     private function nodes(): array
     {
+
+        $pdo = DB::connection()->getPdo();
         // Initiate custom backends for link between Sabre and Monica
         $principalBackend = new PrincipalBackend();   // User rights
         $carddavBackend = new CardDAVBackend();       // Contacts

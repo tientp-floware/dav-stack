@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\DAV\Backend;
 
 use Illuminate\Support\Str;
-use App\Models\User\SyncToken;
+use App\SyncToken;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,13 +19,11 @@ trait SyncDAVBackend
      */
     protected function getCurrentSyncToken()
     {
+        
         $tokens = SyncToken::where([
-            'account_id' => Auth::user()->account_id,
             'user_id' => Auth::user()->id,
             'name' => $this->backendUri(),
-        ])
-            ->orderBy('created_at')
-            ->get();
+        ])->orderBy('created_at')->get();
 
         if ($tokens->count() <= 0) {
             $token = $this->createSyncToken();
@@ -48,7 +46,6 @@ trait SyncDAVBackend
     protected function getSyncToken($syncToken)
     {
         return SyncToken::where([
-            'account_id' => Auth::user()->account_id,
             'user_id' => Auth::user()->id,
             'name' => $this->backendUri(),
         ])
@@ -66,7 +63,6 @@ trait SyncDAVBackend
 
         if ($max) {
             return SyncToken::create([
-                'account_id' => Auth::user()->account_id,
                 'user_id' => Auth::user()->id,
                 'name' => $this->backendUri(),
                 'timestamp' => $max,
@@ -82,7 +78,6 @@ trait SyncDAVBackend
     private function createSyncTokenNow()
     {
         return SyncToken::create([
-            'account_id' => Auth::user()->account_id,
             'user_id' => Auth::user()->id,
             'name' => $this->backendUri(),
             'timestamp' => now(),
