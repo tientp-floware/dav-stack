@@ -15,12 +15,11 @@ class SyncToken extends Migration
     {
         Schema::create('synctoken', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('account_id');
+            $table->string('name');
             $table->unsignedInteger('user_id');
             $table->timestamp('timestamp');
             $table->timestamps();
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            //$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 }
