@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models\User;
+namespace App;
 
-use App\Models\ModelBinding as Model;
+// use App\Models\ModelBinding as Model;
+use Illuminate\Database\Eloquent\Model;
 
 class SyncToken extends Model
 {
@@ -21,7 +22,6 @@ class SyncToken extends Model
      * @var array
      */
     protected $fillable = [
-        'account_id',
         'user_id',
         'name',
         'timestamp',

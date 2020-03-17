@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\CardDAV\AddressBook as BaseAddressBook;
+use Carbon\Carbon;
 
 class AddressBook extends BaseAddressBook
 {
@@ -69,7 +70,7 @@ class AddressBook extends BaseAddressBook
     public function getLastModified()
     {
         if ($this->carddavBackend instanceof CardDAVBackend) {
-            $date = $this->carddavBackend->getLastModified();
+            $date = Carbon::parse($this->carddavBackend->getLastModified());
             if (! is_null($date)) {
                 return $date->timestamp;
             }

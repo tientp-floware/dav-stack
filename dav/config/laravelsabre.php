@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'enabled' => true,
+    'enabled' => env('LARAVELSABRE_ENABLED', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,22 +52,9 @@ return [
     */
 
     'middleware' => [
-        'api',
         'web',
-        'auth.tokenonbasic',
-        'limitations',
+        //'auth.basic',
         Authorize::class,
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Enable access only to these users
-    |--------------------------------------------------------------------------
-    |
-    | A comma-separated list of user's email to enable dav for.
-    | If null or empty, there will be no restriction.
-    |
-    */
-    'users' => env('DAV_USERS', null),
 
 ];
